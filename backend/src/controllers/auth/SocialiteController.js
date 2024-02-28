@@ -1,64 +1,35 @@
-import asyncHandler from "express-async-handler";
-const passport = require("../../config/passport");
-import socialiteService from "../../services/auth/SocialiteService";
+import asyncHanler from "express-async-handler";
+import oAuth2Client from "../../config/google";
+import socialiteCallbackService from "../../services/auth/SocialiteService";
 import { generateAccessToken } from "../../utils/GenerateToken";
 
-const redirect = (req, res) => {
-  const { provider } = req.params;
-  const validProvider = checkProvider(provider);
+const redirect = asyncHanler(async (req, res) => {
+  const isGenerated = oAuth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: "email",
+  });
 
-  if (!validProvider) {
-    return res.status(400).json({
-      message: "Not found",
-    });
-  }
+  return res.status(isGenerated ? 200 : 400).json({
+    message: isGenerated ? "URL" : "Fail to generate",
+    data: isGenerated ?? [],
+  });
+});
 
-  passport.authenticate(provider, { scope: ["email"] })(req, res);
-};
+const callback = asyncHanler(async (req, res) => {
+  const code = req.query.code;
+  const isLogin = await socialiteCallbackService(code, oAuth2Client);
 
-const checkProvider = (provider) => {
-  if (!["google", "facebook"].includes(provider)) {
-    return false;
-  }
+  const accessToken = generateAccessToken(isLogin.id);
 
-  return true;
-};
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 3 * 24 * 60 * 60 * 1000,
+  });
 
-const callback = asyncHandler(async (req, res) => {
-  const { provider } = req.params;
-
-  const validProvider = checkProvider(provider);
-
-  if (!validProvider) {
-    return res.status(400).json({
-      message: "Not found",
-    });
-  }
-
-  passport.authenticate(provider, { session: false }, async (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-
-    if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
-    }
-
-    const email = user.emails[0].value;
-
-    const isLogin = await socialiteService(email);
-    const accessToken = generateAccessToken(isLogin._id);
-
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-    });
-
-    return res.status(isLogin ? 200 : 400).json({
-      message: isLogin ? "Login success" : "Fail to login",
-      data: isLogin ?? [],
-    });
-  })(req, res);
+  return res.status(isLogin ? 200 : 400).json({
+    message: isLogin ? "Login success" : "Fail to login",
+    data: isLogin ?? [],
+  });
 });
 
 module.exports = {

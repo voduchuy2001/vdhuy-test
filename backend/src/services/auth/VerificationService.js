@@ -11,7 +11,7 @@ const sendVerificationEmailService = asyncHandler(async (email) => {
   const verifyToken = generateVerifyToken();
 
   const user = await db.User.findOne({
-    where: { email: email },
+    where: { email: email, verifiedAt: null },
   });
 
   if (!user) {
@@ -23,7 +23,7 @@ const sendVerificationEmailService = asyncHandler(async (email) => {
     verifyTokenExpired: new Date(Date.now() + 15 * 60 * 1000),
   });
 
-  const html = `You are receiving this email because we need to authenticate you as a real user. This link will expire in 15 minutes. <a href=${process.env.URL_SERVER}/api/v1/verify/${verifyToken}>Click here</a>`;
+  const html = `You are receiving this email because we need to authenticate you as a real user. This link will expire in 15 minutes. <a href=${process.env.URL_SERVER}/verify/${verifyToken}>Click here</a>`;
 
   const submitted = await transporter.sendMail({
     from: process.env.MAIL_FROM_ADDRESS,

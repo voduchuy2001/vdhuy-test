@@ -1,20 +1,25 @@
 import asyncHandler from "express-async-handler";
-import crypto from "crypto";
 import db from "../../models/index";
 import userDto from "../../dto/userDto";
 
-const socialiteService = asyncHandler(async (email) => {
-  let user = await db.User.findOne({ where: { email: email } });
+const socialiteCallbackService = asyncHandler(async (code, oAuth2Client) => {
+  const tokenResponse = await oAuth2Client.getToken(code);
+  const idToken = tokenResponse.tokens.id_token;
+  const ticket = await oAuth2Client.verifyIdToken({
+    idToken: idToken,
+  });
+  const user = ticket.getPayload();
+  const { email } = user;
 
-  if (!user) {
-    user = await db.User.create({
+  let account = await db.User.findOne({ where: { email: email } });
+
+  if (!account) {
+    account = await db.User.create({
       email: email,
-      password: crypto.randomBytes(10),
-      verifiedAt: Date.now(),
     });
   }
 
-  return userDto(user);
+  return userDto(account);
 });
 
-module.exports = socialiteService;
+module.exports = socialiteCallbackService;

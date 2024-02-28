@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+import db from "../../models/index";
 import {
   verifyService,
   sendVerificationEmailService,
@@ -16,9 +17,11 @@ const verify = asyncHandler(async (req, res) => {
 });
 
 const sendVerificationEmail = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  let id = req.user.id;
 
-  const isValid = await sendVerificationEmailService(email);
+  const user = await db.User.findByPk(id);
+
+  const isValid = await sendVerificationEmailService(user.email);
 
   return res.status(isValid ? 200 : 400).json({
     message: isValid ? "Resend success" : "Fail to resend",

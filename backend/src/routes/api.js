@@ -2,7 +2,6 @@ const express = require("express");
 
 const loginRequest = require("../requests/auth/LoginRequest");
 const registerRequest = require('../requests/auth/RegisterRequest')
-const verificationRequest = require('../requests/auth/VerificationRequest')
 const loginController = require("../controllers/auth/LoginController");
 const socialiteController = require("../controllers/auth/SocialiteController");
 const registerController = require('../controllers/auth/RegisterController');
@@ -11,7 +10,11 @@ const forgotPasswordController = require('../controllers/auth/ForgotPasswordCont
 const verificationController = require('../controllers/auth/VerificationController');
 const resetPasswordController = require("../controllers/auth/ResetPasswordController");
 const resetPasswordRequest = require("../requests/auth/ResetPasswordRequest");
+const authenticatedController = require("../controllers/auth/AuthenticatedController");
+const logoutController = require("../controllers/auth/LogoutController");
+const AuthenticatedRequest = require("../requests/auth/AuthenticatedRequest");
 const validate = require("../middlewares/Validate");
+const { authenticated } = require('../middlewares/Authenticated');
 
 const router = express.Router();
 
@@ -23,7 +26,9 @@ const initAPIRoutes = (app) => {
   router.post("/forgot-password", forgotPasswordRequest.forgotPassword(), validate, forgotPasswordController.forgotPassword);
   router.post("/reset-password", resetPasswordRequest.resetPassword(), validate, resetPasswordController.resetPassword);
   router.get("/verify/:token", verificationController.verify);
-  router.post("/send-verification-email", verificationRequest.verification(), validate, verificationController.sendVerificationEmail);
+  router.post("/send-verification-email", authenticated, verificationController.sendVerificationEmail);
+  router.get("/authenticated", AuthenticatedRequest.authenticated(),  [validate, authenticated], authenticatedController.authenticated);
+  router.post("/logout", AuthenticatedRequest.authenticated(),  [validate, authenticated], logoutController.logout);
 
   app.use("/api/v1", router);
 };

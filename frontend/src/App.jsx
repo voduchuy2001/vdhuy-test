@@ -1,50 +1,52 @@
-import { Button } from "@/components/ui/button";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "@/views/client/home";
+import ClientLayout from "@/views/layouts/client-layout";
+import AuthLayout from "@/views/layouts/auth-layout";
+import LoginPage from "@/views/auth/login-page";
+import RegisterPage from "@/views/auth/register-page";
+import AdminLayout from "@/views/layouts/admin-layout";
+import DashboardPage from "@/views/admin/dashboard-page";
+import NotFoundPage from "@/views/errors/not-found-page";
+import GoogleCallbackPage from "@/views/client/google-callback-page";
+import ProductPage from "@/views/admin/product-page";
+import OrderPage from "@/views/admin/order-page";
+import UserPage from "@/views/admin/user-page";
+import ForgotPasswordPage from "@/views/auth/forgot-password-page";
+import ResetPasswordPage from "@/views/auth/reset-password-page";
+import SendVerifyPage from "./views/auth/send-verify-page";
+import VerifyPage from "./views/auth/verify-page";
 
 const App = () => {
   return (
-    <div>
-      <Button>❤</Button>
-      <header className="sticky top-0 z-40 w-full border-b bg-background">
-        <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-          <MainNav items={siteConfig.mainNav} />
-          <div className="flex flex-1 items-center justify-end space-x-4">
-            <nav className="flex items-center space-x-1">
-              <Link
-                href={siteConfig.links.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className={buttonVariants({
-                    size: "icon",
-                    variant: "ghost",
-                  })}
-                >
-                  <Icons.gitHub className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </div>
-              </Link>
-              <Link
-                href={siteConfig.links.twitter}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className={buttonVariants({
-                    size: "icon",
-                    variant: "ghost",
-                  })}
-                >
-                  <Icons.twitter className="h-4 w-4 fill-current" />
-                  <span className="sr-only">Twitter</span>
-                </div>
-              </Link>
-              <ThemeToggle />
-            </nav>
-          </div>
-        </div>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route element={<AdminLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/user" element={<UserPage />} />
+        </Route>
+
+        <Route path="/" element={<ClientLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
+          />
+          <Route path="/verify" element={<SendVerifyPage />} />
+          <Route path="/verify/:token" element={<VerifyPage />} />
+        </Route>
+
+        <Route path="/callback/google" element={<GoogleCallbackPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
   );
 };
 

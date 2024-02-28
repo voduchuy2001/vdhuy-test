@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 const jwt = require("jsonwebtoken");
 import db from "../models/index";
 
-const verifyToken = (req, res, next) => {
+const authenticated = (req, res, next) => {
   const token = req.cookies.accessToken;
 
   if (!token) {
@@ -25,7 +25,7 @@ const verifyToken = (req, res, next) => {
 const isAdmin = asyncHandler(async (req, res, next) => {
   const id = req.user.id;
 
-  const user = await db.User.findOne({ id: id, role: "ADMIN" });
+  const user = await db.User.findOne({ where: { id: id, role: "ADMIN" } });
 
   if (!user) {
     return res.status(401).json({
@@ -37,6 +37,6 @@ const isAdmin = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  verifyToken: verifyToken,
+  authenticated: authenticated,
   isAdmin: isAdmin,
 };

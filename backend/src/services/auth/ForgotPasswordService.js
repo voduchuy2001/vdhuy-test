@@ -30,7 +30,7 @@ const sendResetPasswordEmail = asyncHandler(async (user) => {
     return false;
   }
 
-  const html = `This link will expire in 15 minutes. <a href=${process.env.URL_SERVER}/api/v1/reset-password/${resetPwdToken}>Click here</a>`;
+  const html = `This link will expire in 15 minutes. <a href=${process.env.URL_SERVER}/reset-password/${resetPwdToken}>Click here</a>`;
 
   const submitted = await transporter.sendMail({
     from: process.env.MAIL_FROM_ADDRESS,
