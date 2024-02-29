@@ -17,6 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useDispatch } from "react-redux";
+import { login } from "@/redux/userSlice";
 
 const formSchema = z.object({
   email: z.string().email("Kiểm tra định dạng email."),
@@ -26,6 +28,7 @@ const formSchema = z.object({
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -40,8 +43,9 @@ const LoginPage = () => {
 
     await api
       .post("/login", data)
-      .then(() => {
+      .then((response) => {
         toast.success("Đăng nhập thành công");
+        dispatch(login(response.data));
         setTimeout(() => {
           navigate("/");
         }, 1000);

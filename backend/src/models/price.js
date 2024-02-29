@@ -1,14 +1,14 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Product extends Model {
+  class Price extends Model {
     static associate(models) {
-      Product.hasMany(models.Price, {
+      Price.belongsTo(models.Product, {
         foreignKey: "productId",
       });
     }
   }
-  Product.init(
+  Price.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -16,20 +16,15 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      name: DataTypes.STRING,
-      description: DataTypes.TEXT,
-      height: DataTypes.FLOAT,
-      weight: DataTypes.FLOAT,
-      length: DataTypes.FLOAT,
-      width: DataTypes.FLOAT,
-      totalQuantity: DataTypes.INTEGER,
-      status: DataTypes.STRING,
+      price: DataTypes.FLOAT,
+      effectiveDate: DataTypes.DATE,
+      productId: DataTypes.UUID,
     },
     {
       sequelize,
-      modelName: "Product",
+      modelName: "Price",
       timestamps: true,
     }
   );
-  return Product;
+  return Price;
 };

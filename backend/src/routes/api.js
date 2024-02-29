@@ -13,8 +13,11 @@ const resetPasswordRequest = require("../requests/auth/ResetPasswordRequest");
 const authenticatedController = require("../controllers/auth/AuthenticatedController");
 const logoutController = require("../controllers/auth/LogoutController");
 const AuthenticatedRequest = require("../requests/auth/AuthenticatedRequest");
+const productController = require('../controllers/admin/ProductController');
+const clientProductController = require('../controllers/client/ProductController');
 const validate = require("../middlewares/Validate");
-const { authenticated } = require('../middlewares/Authenticated');
+const { authenticated, isAdmin } = require('../middlewares/Authenticated');
+const ProductRequest = require("../requests/admin/ProductRequest");
 
 const router = express.Router();
 
@@ -29,6 +32,12 @@ const initAPIRoutes = (app) => {
   router.post("/send-verification-email", authenticated, verificationController.sendVerificationEmail);
   router.get("/authenticated", AuthenticatedRequest.authenticated(),  [validate, authenticated], authenticatedController.authenticated);
   router.post("/logout", AuthenticatedRequest.authenticated(),  [validate, authenticated], logoutController.logout);
+
+  router.get("/admin/product", [authenticated, isAdmin], productController.index);
+  router.post("/admin/create-product", ProductRequest.create(), [authenticated, isAdmin, validate], productController.create);
+  router.get("/admin/edit-product/:productId", [authenticated, isAdmin], productController.edit);
+
+  router.get("/product", clientProductController.index);
 
   app.use("/api/v1", router);
 };

@@ -8,11 +8,9 @@ module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
       User.belongsTo(models.User, {
-        as: "supervisor",
         foreignKey: "supervisorId",
       });
       User.hasMany(models.User, {
-        as: "subordinates",
         foreignKey: "supervisorId",
       });
     }

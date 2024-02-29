@@ -1,17 +1,22 @@
+import MainNavbar from "@/components/admin/main-navbar";
+import Search from "@/components/admin/search";
+import UserNavbar from "@/components/admin/user-navbar";
+import { Toaster } from "@/components/ui/sonner";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
     <>
+      <Toaster />
+
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            {/* <TeamSwitcher />
-            <MainNav className="mx-6" />
+            <MainNavbar className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />
-              <UserNav />
-            </div> */}
+              <UserNavbar />
+            </div>
           </div>
         </div>
 

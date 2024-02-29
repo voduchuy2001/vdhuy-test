@@ -1,13 +1,16 @@
 "use strict";
+
+const { PRODUCT_STATUS } = require("../constants");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Products", {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       name: {
         type: Sequelize.STRING,
@@ -27,6 +30,13 @@ module.exports = {
       },
       width: {
         type: Sequelize.FLOAT,
+      },
+      totalQuantity: {
+        type: Sequelize.INTEGER,
+      },
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: PRODUCT_STATUS.DRAFT,
       },
       createdAt: {
         allowNull: false,

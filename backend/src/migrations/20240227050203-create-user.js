@@ -9,8 +9,8 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID, // Thay đổi kiểu dữ liệu của cột id thành UUID
-        defaultValue: Sequelize.UUIDV4, // Thiết lập giá trị mặc định cho cột id là một UUID ngẫu nhiên
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       name: {
         type: Sequelize.STRING,
@@ -33,8 +33,6 @@ module.exports = {
           model: "Users",
           key: "id",
         },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
       },
       verifiedAt: {
         type: Sequelize.DATE,
