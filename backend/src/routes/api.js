@@ -18,7 +18,9 @@ const clientProductController = require('../controllers/client/ProductController
 const validate = require("../middlewares/Validate");
 const { authenticated, isAdmin } = require('../middlewares/Authenticated');
 const ProductRequest = require("../requests/admin/ProductRequest");
-const clientOrderController = require('../controllers/client/OrderController')
+const clientOrderController = require('../controllers/client/OrderController');
+const receiptRequest = require("../requests/admin/ReceiptRequest");
+const receiptController = require("../controllers/admin/ReceiptController");
 
 const router = express.Router();
 
@@ -37,6 +39,9 @@ const initAPIRoutes = (app) => {
   router.get("/admin/product", [authenticated, isAdmin], productController.index);
   router.post("/admin/create-product", ProductRequest.create(), [authenticated, isAdmin, validate], productController.create);
   router.get("/admin/edit-product/:productId", [authenticated, isAdmin], productController.edit);
+
+  router.post("/admin/create-receipt", receiptRequest.create(), [authenticated, isAdmin, validate], receiptController.create);
+  router.post("/admin/confirm-receipt", receiptRequest.confirm(), [authenticated, isAdmin, validate], receiptController.confirm);
 
   router.get("/product", clientProductController.index);
   router.post("/order", clientOrderController.create);

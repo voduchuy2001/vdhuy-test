@@ -11,7 +11,7 @@ const index = asyncHandler(async (req, res) => {
     : 10;
 
   const productsWithLatestPrice =
-    await productService.getProductsWithLatestPrice(page, limit);
+    await productService.getProductsWithPriceService(page, limit);
 
   return res.status(productsWithLatestPrice ? 200 : 400).json({
     message: productsWithLatestPrice

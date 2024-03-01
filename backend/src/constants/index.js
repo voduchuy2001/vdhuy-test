@@ -35,3 +35,9 @@ exports.PAYMENT_STATUS = {
   PAID: "PAID",
   UN_PAID: "UNPAID",
 };
+
+exports.RECEIPT_STATUS = {
+  PENDING: "PENDING",
+  ACCEPTED: "ACCEPTED",
+  REJECT: "REJECT",
+};

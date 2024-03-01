@@ -6,6 +6,7 @@ const login = () => [
     .withMessage("Email is required!")
     .isEmail()
     .withMessage("Email format wrong!"),
+    
   body("password").notEmpty().withMessage("Password is required"),
 ];
 

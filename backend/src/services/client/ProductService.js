@@ -1,7 +1,7 @@
 import db from "../../models/index";
 import { PRODUCT_STATUS } from "../../constants/index";
 
-const getProductsWithLatestPrice = async (page = 1, limit = 10) => {
+const getProductsWithPriceService = async (page = 1, limit = 10) => {
   const offset = (page - 1) * limit;
   const currentDate = new Date();
 
@@ -40,5 +40,5 @@ const getProductsWithLatestPrice = async (page = 1, limit = 10) => {
 };
 
 module.exports = {
-  getProductsWithLatestPrice: getProductsWithLatestPrice,
+  getProductsWithPriceService: getProductsWithPriceService,
 };

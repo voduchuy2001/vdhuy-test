@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.Price, {
         foreignKey: "productId",
       });
+
+      Product.hasMany(models.Receipt, {
+        foreignKey: "productId",
+      });
     }
   }
   Product.init(
@@ -29,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Product",
       timestamps: true,
+      tableName: "products",
     }
   );
   return Product;

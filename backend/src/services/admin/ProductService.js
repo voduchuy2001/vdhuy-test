@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import db from "../../models/index";
 
 const getProductsWithPriceService = asyncHandler(
-  async (page = 1, limit = 10, include = []) => {
+  async (page = 1, limit = 10) => {
     const offset = (page - 1) * parseInt(limit);
     const queryOptions = {
       offset: offset,
@@ -26,13 +26,25 @@ const getProductsWithPriceService = asyncHandler(
 const createProductService = asyncHandler(async (data) => {
   const product = await db.Product.create(data);
 
-  const productPrice = await db.Price.create({
-    price: data.price,
-    effectiveDate: data.effectiveDate ?? Date.now(),
-    productId: product.id,
-  });
+  if (!product) {
+    return false;
+  }
 
-  return !!(product && productPrice);
+  if (data.prices && Array.isArray(data.prices)) {
+    await Promise.all(
+      data.prices.map(async (priceItem) => {
+        const [price, effectiveDate] = priceItem;
+
+        await db.Price.create({
+          price,
+          effectiveDate: effectiveDate || new Date(),
+          productId: product.id,
+        });
+      })
+    );
+  }
+
+  return true;
 });
 
 module.exports = {
