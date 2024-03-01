@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "@/views/client/home";
+import HomePage from "@/views/client/home-page";
 import ClientLayout from "@/views/layouts/client-layout";
 import AuthLayout from "@/views/layouts/auth-layout";
 import LoginPage from "@/views/auth/login-page";
@@ -15,8 +15,9 @@ import ForgotPasswordPage from "@/views/auth/forgot-password-page";
 import ResetPasswordPage from "@/views/auth/reset-password-page";
 import SendVerifyPage from "@/views/auth/send-verify-page";
 import VerifyPage from "@/views/auth/verify-page";
-import CreateProductPage from "@/views/admin/create-product-page";
-import PlaceOrderPage from "./views/client/place-order-page";
+import CartPage from "@/views/client/cart-page";
+import CheckoutPage from "./views/client/checkout-page";
+import VNPayCallbackPage from "./views/client/vnpay-callback-page";
 
 const App = () => {
   return (
@@ -24,14 +25,15 @@ const App = () => {
       <Route element={<AdminLayout />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/product" element={<ProductPage />} />
-        <Route path="/create-product" element={<CreateProductPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/user" element={<UserPage />} />
       </Route>
 
       <Route path="/" element={<ClientLayout />}>
-        <Route index element={<Home />} />
-        <Route path="/place-order" element={<PlaceOrderPage />} />
+        <Route index element={<HomePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/callback-vnpay" element={<VNPayCallbackPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>

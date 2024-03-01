@@ -15,7 +15,7 @@ const createOrderService = asyncHandler(async (req, ipAddr, data) => {
     address: address,
     email: email,
     paymentMethod: paymentMethod,
-    bankCode: bankCode,
+    bankCode: bankCode || null,
     phoneNumber: phoneNumber,
     totalAmount: calculateTotalAmount(orderProducts),
   });
@@ -23,7 +23,14 @@ const createOrderService = asyncHandler(async (req, ipAddr, data) => {
   const createdOrderProducts = await Promise.all(
     orderProducts.map(async (orderProduct) => {
       const [productId, quantity, purchasePrice] = orderProduct;
-      await createOrderProduct({
+
+      const product = await db.Product.findByPk(productId);
+
+      if (!product) {
+        return null;
+      }
+
+      return db.OrderProduct.create({
         orderId: order.id,
         productId: productId,
         quantity: quantity,
@@ -99,10 +106,6 @@ const calculateTotalAmount = (orderProducts) => {
   return totalAmount;
 };
 
-const createOrderProduct = asyncHandler(async (data) => {
-  await db.OrderProduct.create(data);
-});
-
 const callbackVNPayService = asyncHandler(async (VNPAYParams) => {
   let secureHash = VNPAYParams["vnp_SecureHash"];
   delete VNPAYParams["vnp_SecureHash"];
@@ -125,12 +128,12 @@ const callbackVNPayService = asyncHandler(async (VNPAYParams) => {
   }
 
   const orderId = VNPAYParams["vnp_TxnRef"];
-  const updatedOrder = await db.Order.update(
+  const order = await db.Order.update(
     { paymentStatus: PAYMENT_STATUS.PAID },
     { where: { id: orderId } }
   );
 
-  if (!updatedOrder) {
+  if (order[0] !== 1) {
     return false;
   }
 

@@ -20,8 +20,8 @@ const create = asyncHandler(async (req, res) => {
 });
 
 const callbackVNPay = asyncHandler(async (req, res) => {
-  let vnp_Params = req.query;
-  const isSuccess = await callbackVNPayService(vnp_Params);
+  let vnpParams = req.query;
+  const isSuccess = await callbackVNPayService(vnpParams);
 
   return res.status(isSuccess ? 200 : 400).json({
     message: isSuccess ? "Payment Successfully" : "Payment Failed",
