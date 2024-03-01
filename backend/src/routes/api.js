@@ -18,6 +18,7 @@ const clientProductController = require('../controllers/client/ProductController
 const validate = require("../middlewares/Validate");
 const { authenticated, isAdmin } = require('../middlewares/Authenticated');
 const ProductRequest = require("../requests/admin/ProductRequest");
+const clientOrderController = require('../controllers/client/OrderController')
 
 const router = express.Router();
 
@@ -38,6 +39,7 @@ const initAPIRoutes = (app) => {
   router.get("/admin/edit-product/:productId", [authenticated, isAdmin], productController.edit);
 
   router.get("/product", clientProductController.index);
+  router.post("/order", clientOrderController.create);
 
   app.use("/api/v1", router);
 };

@@ -1,4 +1,5 @@
 import MainNavbar from "@/components/admin/main-navbar";
+import PlaceOrderToast from "@/components/admin/place-order-toast";
 import Search from "@/components/admin/search";
 import UserNavbar from "@/components/admin/user-navbar";
 import { Toaster } from "@/components/ui/sonner";
@@ -8,6 +9,7 @@ const AdminLayout = () => {
   return (
     <>
       <Toaster />
+      <PlaceOrderToast />
 
       <div className="hidden flex-col md:flex">
         <div className="border-b">

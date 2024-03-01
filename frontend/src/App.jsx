@@ -16,6 +16,7 @@ import ResetPasswordPage from "@/views/auth/reset-password-page";
 import SendVerifyPage from "@/views/auth/send-verify-page";
 import VerifyPage from "@/views/auth/verify-page";
 import CreateProductPage from "@/views/admin/create-product-page";
+import PlaceOrderPage from "./views/client/place-order-page";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
 
       <Route path="/" element={<ClientLayout />}>
         <Route index element={<Home />} />
+        <Route path="/place-order" element={<PlaceOrderPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>
