@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import io from "socket.io-client";
 import { useEffect } from "react";
 
-const socket = io.connect("http://localhost:8000");
+const socket = io.connect(import.meta.env.VITE_SERVER_URL);
 
 const PlaceOrderToast = () => {
   useEffect(() => {
@@ -14,7 +14,7 @@ const PlaceOrderToast = () => {
       socket.off("orderCreated");
       socket.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   return null;
 };
