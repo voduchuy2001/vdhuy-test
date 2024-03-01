@@ -6,8 +6,8 @@ const socket = io.connect(import.meta.env.VITE_SERVER_URL);
 
 const PlaceOrderToast = () => {
   useEffect(() => {
-    socket.on("orderCreated", () => {
-      toast.success("Bạn vừa có thêm 1 đơn hàng mới");
+    socket.on("orderCreated", (response) => {
+      toast.success(`Người dùng: ${response.name} vừa đặt hàng`);
     });
 
     return () => {

@@ -11,9 +11,7 @@ const create = asyncHandler(async (req, res) => {
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
 
-  const isSuccess = await createOrderService(ipAddr, req.body);
-
-  req.app.get("io").emit("orderCreated", isSuccess);
+  const isSuccess = await createOrderService(req, ipAddr, req.body);
 
   return res.status(isSuccess ? 200 : 400).json({
     message: isSuccess ? "Order Created Successfully" : "Order Created Failed",

@@ -6,7 +6,7 @@ import { sortObject } from "../../utils/SortObjectVNPay";
 import querystring from "qs";
 const QueryString = require("qs");
 
-const createOrderService = asyncHandler(async (ipAddr, data) => {
+const createOrderService = asyncHandler(async (req, ipAddr, data) => {
   const orderProducts = data.orderProducts;
   const { name, address, email, paymentMethod, bankCode, phoneNumber } = data;
 
@@ -39,6 +39,8 @@ const createOrderService = asyncHandler(async (ipAddr, data) => {
   if (paymentMethod === PAYMENT_METHOD.VNPAY) {
     return redirectVNPay(ipAddr, bankCode, order.id, order.totalAmount);
   }
+
+  req.app.get("io").emit("orderCreated", order);
 
   return order;
 });
