@@ -18,10 +18,7 @@ exports.VNPAY = {
   ORDER_TYPE: process.env.APP_NAME ?? "PAY ORDER INVOICE",
 };
 
-exports.BANK_CODES = {
-  NCB: "NCB",
-  VCB: "VCB",
-};
+exports.BANK_CODES = ["NCB"];
 
 exports.ORDER_STATUS = {
   PENDING: "PENDING",

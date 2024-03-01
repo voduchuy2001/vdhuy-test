@@ -24,6 +24,7 @@ const receiptController = require("../controllers/admin/ReceiptController");
 const upload = require("../config/multer");
 const productImageController = require('../controllers/admin/ProductImageController');
 const productImageRequest = require("../requests/admin/ProductImageRequest");
+const orderRequest = require("../requests/client/OrderRequest");
 
 const router = express.Router();
 
@@ -49,7 +50,8 @@ const initAPIRoutes = (app) => {
   router.put("/admin/confirm-receipt", receiptRequest.confirm(), [authenticated, isAdmin, validate], receiptController.confirm);
 
   router.get("/product", clientProductController.index);
-  router.post("/order", clientOrderController.create);
+  router.post("/order", orderRequest.create(), validate, clientOrderController.create);
+  router.get("/callback-vnpay", clientOrderController.callbackVNPay);
 
   app.use("/api/v1", router);
 };
