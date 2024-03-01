@@ -75,19 +75,21 @@ const ProductPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious onClick={handlePreviousClick} />
-            </PaginationItem>
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious onClick={handlePreviousClick} />
+              </PaginationItem>
 
-            <PaginationItem>
-              <PaginationNext onClick={handleNextClick} />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              <PaginationItem>
+                <PaginationNext onClick={handleNextClick} />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

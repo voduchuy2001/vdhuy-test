@@ -37,12 +37,17 @@ const edit = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
   const product = await db.Product.findByPk(productId, {
-    include: {
-      model: db.Price,
-      required: false,
-      order: [["effectiveDate", "DESC"]],
-      limit: 1,
-    },
+    include: [
+      {
+        model: db.Price,
+        required: false,
+        order: [["effectiveDate", "DESC"]],
+        limit: 1,
+      },
+      {
+        model: db.Image,
+      },
+    ],
   });
 
   return res.status(product ? 200 : 400).json({

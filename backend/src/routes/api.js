@@ -21,6 +21,9 @@ const ProductRequest = require("../requests/admin/ProductRequest");
 const clientOrderController = require('../controllers/client/OrderController');
 const receiptRequest = require("../requests/admin/ReceiptRequest");
 const receiptController = require("../controllers/admin/ReceiptController");
+const upload = require("../config/multer");
+const productImageController = require('../controllers/admin/ProductImageController');
+const productImageRequest = require("../requests/admin/ProductImageRequest");
 
 const router = express.Router();
 
@@ -39,9 +42,11 @@ const initAPIRoutes = (app) => {
   router.get("/admin/product", [authenticated, isAdmin], productController.index);
   router.post("/admin/create-product", ProductRequest.create(), [authenticated, isAdmin, validate], productController.create);
   router.get("/admin/edit-product/:productId", [authenticated, isAdmin], productController.edit);
+  router.post("/admin/upload-product-image", upload.array('images'), productImageRequest.upload(), [authenticated, isAdmin, validate], productImageController.upload);
+  router.delete("/admin/remove-product-image", productImageRequest.remove(), [authenticated, isAdmin, validate], productImageController.remove);
 
   router.post("/admin/create-receipt", receiptRequest.create(), [authenticated, isAdmin, validate], receiptController.create);
-  router.post("/admin/confirm-receipt", receiptRequest.confirm(), [authenticated, isAdmin, validate], receiptController.confirm);
+  router.put("/admin/confirm-receipt", receiptRequest.confirm(), [authenticated, isAdmin, validate], receiptController.confirm);
 
   router.get("/product", clientProductController.index);
   router.post("/order", clientOrderController.create);

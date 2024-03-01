@@ -24,6 +24,9 @@ const getProductsWithPriceService = async (page = 1, limit = 10) => {
         order: [["effectiveDate", "DESC"]],
         limit: 1,
       },
+      {
+        model: db.Image,
+      },
     ],
     offset: offset,
     limit: limit,

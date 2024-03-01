@@ -7,7 +7,7 @@ const getProductsWithPriceService = asyncHandler(
     const queryOptions = {
       offset: offset,
       limit: parseInt(limit),
-      include: db.Price,
+      include: [db.Price, db.Image],
     };
 
     const { rows, count } = await db.Product.findAndCountAll(queryOptions);
