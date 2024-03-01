@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import db from "../../models/index";
 import {
   createProductService,
   getProductsWithPriceService,
@@ -33,31 +32,7 @@ const create = asyncHandler(async (req, res) => {
   });
 });
 
-const edit = asyncHandler(async (req, res) => {
-  const { productId } = req.params;
-
-  const product = await db.Product.findByPk(productId, {
-    include: [
-      {
-        model: db.Price,
-        required: false,
-        order: [["effectiveDate", "DESC"]],
-        limit: 1,
-      },
-      {
-        model: db.Image,
-      },
-    ],
-  });
-
-  return res.status(product ? 200 : 400).json({
-    message: product ? "Get Product Successfully!" : "Get Product Failed!",
-    data: product ?? [],
-  });
-});
-
 module.exports = {
   index: index,
   create: create,
-  edit: edit,
 };

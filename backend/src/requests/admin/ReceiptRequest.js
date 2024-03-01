@@ -1,5 +1,4 @@
 const { body } = require("express-validator");
-const { RECEIPT_STATUS } = require("../../constants");
 
 const create = () => [
   body("quantity")
