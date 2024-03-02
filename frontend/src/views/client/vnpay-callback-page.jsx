@@ -14,11 +14,15 @@ const VNPayCallbackPage = () => {
         .get(`/callback-vnpay${queryString}`)
         .then(() => {
           toast.success("Thanh toán thành công");
-          navigate("/");
+          setInterval(() => {
+            navigate("/");
+          }, 1000);
         })
         .catch(() => {
           toast.success("Thanh toán không thành công");
-          navigate("/");
+          setInterval(() => {
+            navigate("/");
+          }, 1000);
         });
     };
 

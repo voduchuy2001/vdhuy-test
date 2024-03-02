@@ -41,9 +41,14 @@ const CartPage = () => {
             <CardTitle>Giỏ hành của bạn</CardTitle>
             <CardDescription>
               Tổng giá trị đơn hàng:{" "}
-              {formatCurrencyVND(
-                carts.reduce((total, cart) => total + cart.price * cart.qty, 0)
-              )}
+              <strong>
+                {formatCurrencyVND(
+                  carts.reduce(
+                    (total, cart) => total + cart.price * cart.qty,
+                    0
+                  )
+                )}
+              </strong>
             </CardDescription>
           </CardHeader>
           <CardContent>

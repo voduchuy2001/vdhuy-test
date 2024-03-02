@@ -32,7 +32,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -299,30 +299,31 @@ const CheckoutPage = () => {
                 </div>
               </CardContent>
 
-              <CardFooter className="justify-between space-x-2">
-                <Button>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="mr-2 w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-                    />
-                  </svg>
-                  Tiếp tục mua sắm
+              <CardFooter className="justify-end ml-2 space-x-2">
+                <Button asChild>
+                  <span className="flex">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="mr-2 w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                      />
+                    </svg>
+                    <Link to={"/"}>Tiếp tục mua sắm</Link>
+                  </span>
                 </Button>
 
                 <Button variant="outline" type="submit" disabled={isLoading}>
-                  {isLoading && (
+                  {isLoading ? (
                     <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  {!isLoading && (
+                  ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
